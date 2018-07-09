@@ -5,14 +5,24 @@ import AvatarImages from './components/AvatarImages';
 import './App.css';
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <AppNavbar />
-        <AvatarImages />
-      </div>
-    );
+  state = {avatars: []}
+
+    componentDidMount() {
+      fetch('/avatars')
+        .then(res => res.json())
+        .then(avatars => this.setState({ avatars }));
+    }
+
+    render() {
+      return (
+        <div className="App">
+          <h1>GitHub Avatars</h1>
+          {this.state.avatars.map(avatar =>
+            <div key={avatar.id}>{avatar.avatar_url}</div>
+          )}
+        </div>
+      );
+    }
   }
-}
 
 export default App;

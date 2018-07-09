@@ -1,22 +1,24 @@
 const express = require('express');
 const router = express.Router();
-const request = require('request');
+const fetch = require('isomorphic-fetch');
 
-// GET route to api/avatars
+require('es6-promise').polyfill();
+
+// GET route to avatars
 router.get('/', function(req, res) {
-  var options =
-  {
-    url: 'https://api.github.com/repositories?since=1000'
-  };
+  res.send({ express: 'Hello From Express' });
 
-  function callback(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var dataObj = JSON.parse(body);
-      console.log(dataObj);
-    }
-  }
 
-  request(options, callback);
+  fetch('https://api.github.com/repositories?since=1000')
+    .then(function(response) {
+        if (response.status >= 400) {
+            throw new Error("Bad response from server");
+        }
+        return response.json();
+    })
+    .then(function(repos) {
+        console.log(repos);
+    });
 });
 
 module.exports = router;
