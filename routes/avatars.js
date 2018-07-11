@@ -5,8 +5,8 @@ const fetch = require('isomorphic-fetch');
 require('es6-promise').polyfill();
 
 // GET route to avatars
+// send request to github API, start with repo 1000
 router.get('/', function(req, res) {
-  // res.send({ express: 'Hello From Express' });
   fetch('https://api.github.com/repositories?since=1000')
     .then(function(response) {
         if (response.status >= 400) {
@@ -16,7 +16,7 @@ router.get('/', function(req, res) {
     })
     .then(function(repos) {
         res.send(repos);
-        console.log(repos);
+        // console.log(repos);
     });
 });
 
